@@ -1,8 +1,10 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import logo from "./logo.svg";
+import "./App.css";
+import "./firebase-messaging-sw";
 
 function App() {
+  console.log(process.env.PUBLIC_URL);
   return (
     <div className="App">
       <header className="App-header">
