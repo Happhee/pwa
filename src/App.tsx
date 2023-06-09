@@ -1,28 +1,42 @@
-import React from "react";
-import logo from "./logo.svg";
-import "./App.css";
+import React, { useEffect, useRef, useState } from "react";
 import "./firebase-messaging-sw";
+import { getInitToken } from "./firebase-messaging-sw";
+import { postPushNotification } from "./lib/api/notification";
 
-function App() {
-  console.log(process.env.PUBLIC_URL);
+const App = () => {
+  const [happheeToken, setHappheeToken] = useState("");
+  const getToken = async () => {
+    const token = await getInitToken();
+    if (token) setHappheeToken(token);
+  };
+
+  const handlePushNotification = async (
+    e: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    e.preventDefault();
+    console.log("dd");
+    await postPushNotification({
+      message: {
+        token: happheeToken,
+        notification: {
+          title: "웹에서보내는 푸쉬알림",
+          body: "성공 >.<",
+        },
+      },
+    });
+  };
+  useEffect(() => {
+    getToken();
+  }, []);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <span>토근 발급 </span>
+      <span>{happheeToken}</span>
+      <button type="button" onClick={handlePushNotification}>
+        핸드폰으로 푸쉬알림 보내기
+      </button>
     </div>
   );
-}
+};
 
 export default App;
