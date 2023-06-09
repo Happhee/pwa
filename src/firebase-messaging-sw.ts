@@ -33,13 +33,6 @@ async function requestPermission() {
 
   console.log("알림 권한이 허용됨");
 
-  const token = await getToken(messaging, {
-    vapidKey: process.env.REACT_APP_VAPID_KEY,
-  });
-
-  if (token) console.log("token: ", token);
-  else console.log("Can not get Token");
-
   onMessage(messaging, (payload) => {
     console.log("메시지가 도착했습니다.", payload);
     // ...
@@ -47,3 +40,11 @@ async function requestPermission() {
 }
 
 requestPermission();
+
+export const getInitToken = async () => {
+  const token = await getToken(messaging, {
+    vapidKey: process.env.REACT_APP_VAPID_KEY,
+  });
+
+  return token;
+};
