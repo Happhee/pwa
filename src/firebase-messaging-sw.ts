@@ -39,7 +39,7 @@ async function requestPermission() {
   });
 }
 
-requestPermission();
+// requestPermission();
 
 export const getInitToken = async () => {
   const token = await getToken(messaging, {
@@ -48,3 +48,28 @@ export const getInitToken = async () => {
 
   return token;
 };
+
+export const useNotification = (title: string, options: any) => {
+  if (!("Notification" in window)) {
+    return;
+  }
+  const fireNotif = () => {
+    Notification.requestPermission();
+    console.log(Notification.permission);
+    // if (Notification.permission !== "granted") {
+    //   Notification.requestPermission().then((permission) => {
+    //     console.log(permission);
+    //     if (permission === "granted") {
+    //       new Notification(title, options);
+    //     } else {
+    //       return;
+    //     }
+    //   });
+    // } else {
+    //   new Notification(title, options);
+    // }
+  };
+  return fireNotif;
+};
+
+export default useNotification;

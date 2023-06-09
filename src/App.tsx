@@ -1,10 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./firebase-messaging-sw";
-import { getInitToken } from "./firebase-messaging-sw";
+import useNotification, { getInitToken } from "./firebase-messaging-sw";
 import { postPushNotification } from "./lib/api/notification";
 
 const App = () => {
   const [happheeToken, setHappheeToken] = useState("");
+  const triggerNotif = useNotification("Hello, React hooks!", {
+    body: "Nice React!",
+  });
+
   const getToken = async () => {
     const token = await getInitToken();
     if (token) setHappheeToken(token);
@@ -26,7 +30,7 @@ const App = () => {
     });
   };
   useEffect(() => {
-    getToken();
+    // getToken();
   }, []);
   return (
     <div>
@@ -35,6 +39,7 @@ const App = () => {
       <button type="button" onClick={handlePushNotification}>
         핸드폰으로 푸쉬알림 보내기
       </button>
+      <button onClick={triggerNotif}>Notif</button>
     </div>
   );
 };
